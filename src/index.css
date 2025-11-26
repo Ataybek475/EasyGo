@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Защита от перевода логотипа */
+.notranslate {
+  translate: no;
+}
+
+/* Глобальные стили */
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: white;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Кастомные стили */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Анимации переходов */
+.fade-out {
+  animation: fadeOut 0.2s ease-in-out forwards;
+}
+
+.fade-in {
+  animation: fadeIn 0.2s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Стили для интерактивной карты */
+.map-container {
+  min-height: 400px;
+  touch-action: none;
+}
+
+/* Анимация пульсации для маркера местоположения */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Плавные переходы для кнопок */
+button {
+  transition: all 0.2s ease;
+}
+
+/* Улучшенный курсор для карты */
+.cursor-grab {
+  cursor: grab;
+}
+
+.cursor-grabbing {
+  cursor: grabbing;
+}

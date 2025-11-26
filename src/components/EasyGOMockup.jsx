@@ -1,0 +1,218 @@
+import React, { useState, useEffect, useRef } from "react";
+
+export default function EasyGOMockup({ setScreen }) {
+  const [currentTime, setCurrentTime] = useState("");
+  const [scale, setScale] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [startPos, setStartPos] = useState({ x: 0, y: 0 });
+  const mapRef = useRef(null);
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      setCurrentTime(`${hours}:${minutes}`);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleZoomIn = () => {
+    setScale(prev => Math.min(prev + 0.2, 3));
+  };
+
+  const handleZoomOut = () => {
+    setScale(prev => Math.max(prev - 0.2, 0.5));
+  };
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartPos({
+      x: e.clientX - position.x,
+      y: e.clientY - position.y
+    });
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    
+    setPosition({
+      x: e.clientX - startPos.x,
+      y: e.clientY - startPos.y
+    });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    setIsDragging(true);
+    setStartPos({
+      x: touch.clientX - position.x,
+      y: touch.clientY - position.y
+    });
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    
+    setPosition({
+      x: touch.clientX - startPos.x,
+      y: touch.clientY - startPos.y
+    });
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  const resetPosition = () => {
+    setPosition({ x: 0, y: 0 });
+    setScale(1);
+  };
+
+  return (
+    <div className="min-h-screen bg-white flex flex-col pb-24 relative">
+      {/* КАРТА НА ВЕСЬ ЭКРАН КАК ФОН */}
+      <div className="absolute inset-0">
+        {/* Контейнер карты */}
+        <div 
+          ref={mapRef}
+          className={`w-full h-full relative overflow-hidden ${
+            isDragging ? 'cursor-grabbing' : 'cursor-grab'
+          }`}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Стилизованная карта с трансформациями */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-br from-blue-400 to-green-400"
+            style={{
+              transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
+              transition: isDragging ? 'none' : 'transform 0.1s ease',
+              minWidth: '200%',
+              minHeight: '200%'
+            }}
+          >
+            {/* Дороги - сетка */}
+            <div className="absolute top-0 left-0 w-full h-full">
+              {/* Горизонтальные дороги */}
+              <div className="absolute top-1/4 left-0 right-0 h-3 bg-gray-600 transform -translate-y-1/2"></div>
+              <div className="absolute top-1/2 left-0 right-0 h-3 bg-gray-600 transform -translate-y-1/2"></div>
+              <div className="absolute top-3/4 left-0 right-0 h-3 bg-gray-600 transform -translate-y-1/2"></div>
+              
+              {/* Вертикальные дороги */}
+              <div className="absolute left-1/4 top-0 bottom-0 w-3 bg-gray-600 transform -translate-x-1/2"></div>
+              <div className="absolute left-1/2 top-0 bottom-0 w-3 bg-gray-600 transform -translate-x-1/2"></div>
+              <div className="absolute left-3/4 top-0 bottom-0 w-3 bg-gray-600 transform -translate-x-1/2"></div>
+            </div>
+            
+            {/* Здания */}
+            <div className="absolute top-1/4 left-1/4 w-20 h-28 bg-gray-700 rounded-lg transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute top-1/3 right-1/3 w-24 h-32 bg-gray-800 rounded-lg transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute bottom-1/4 left-1/3 w-28 h-36 bg-gray-900 rounded-lg transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute bottom-1/3 right-1/4 w-16 h-24 bg-gray-700 rounded-lg transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute top-2/3 left-1/5 w-22 h-26 bg-gray-800 rounded-lg transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute top-1/5 right-1/5 w-26 h-30 bg-gray-900 rounded-lg transform -translate-x-1/2 -translate-y-1/2"></div>
+            
+            {/* Парки/зеленые зоны */}
+            <div className="absolute top-2/5 left-2/5 w-40 h-40 bg-green-500 rounded-xl transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute bottom-1/5 right-2/5 w-36 h-36 bg-green-500 rounded-xl transform -translate-x-1/2 -translate-y-1/2"></div>
+            
+            {/* Текущее местоположение пользователя */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+              <div className="relative">
+                <div className="w-12 h-12 bg-purple-600 rounded-full border-4 border-white shadow-xl"></div>
+                <div className="absolute inset-0 w-12 h-12 bg-purple-600 rounded-full animate-ping opacity-75"></div>
+              </div>
+            </div>
+
+            {/* Маркеры машин такси */}
+            <div className="absolute top-2/5 left-2/5 w-10 h-10 bg-yellow-400 rounded-full border-3 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute top-3/5 right-2/5 w-10 h-10 bg-yellow-400 rounded-full border-3 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute bottom-1/3 left-2/3 w-10 h-10 bg-yellow-400 rounded-full border-3 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute top-1/3 right-1/4 w-10 h-10 bg-yellow-400 rounded-full border-3 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute bottom-2/5 left-1/4 w-10 h-10 bg-yellow-400 rounded-full border-3 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
+          </div>
+
+          {/* Кнопка текущего местоположения */}
+          <button 
+            onClick={resetPosition}
+            className="absolute bottom-32 right-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center z-20 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+          >
+            <span className="text-xl">📍</span>
+          </button>
+
+          {/* Панель масштабирования */}
+          <div className="absolute top-20 right-4 bg-white rounded-xl shadow-lg z-20 overflow-hidden">
+            <button 
+              onClick={handleZoomIn}
+              className="w-12 h-12 flex items-center justify-center border-b border-gray-200 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+            >
+              <span className="text-xl font-bold text-gray-700">+</span>
+            </button>
+            <button 
+              onClick={handleZoomOut}
+              className="w-12 h-12 flex items-center justify-center hover:bg-gray-100 active:bg-gray-200 transition-colors"
+            >
+              <span className="text-xl font-bold text-gray-700">−</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Контент поверх карты */}
+      <div className="relative z-10 bg-transparent">
+        {/* Status Bar */}
+        <div className="pt-2 px-4 text-center">
+          <div className="text-black font-medium">{currentTime}</div>
+        </div>
+
+        {/* Header с текстовым логотипом */}
+        <header className="px-6 pt-2">
+          {/* Логотип с фиолетовым Go! */}
+          <div className="text-3xl font-bold text-black notranslate">
+            Easy<span className="text-purple-600">Go!</span>
+          </div>
+
+          {/* Promo Banner - ВЕСЬ БАННЕР ПЕРЕМЕЩЕН ВЛЕВО С ТОЧНЫМИ РАЗМЕРАМИ */}
+          <div 
+            className="mt-4 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-2xl p-4 ml-0"
+            style={{ width: '189px', height: '84px' }}
+          >
+            <div className="h-full flex flex-col justify-center">
+              <div className="font-semibold text-sm">Скидка 20% на</div>
+              <div className="font-semibold text-sm">первую поездку</div>
+              <div className="mt-1 bg-black text-white px-2 py-1 rounded-full text-xs font-semibold text-center">
+                EASYGO25
+              </div>
+            </div>
+          </div>
+        </header>
+      </div>
+
+      {/* Search Button поверх карты */}
+      <div className="absolute bottom-24 left-6 right-6 z-10">
+        <button
+          onClick={() => setScreen("destination")}
+          className="w-full bg-black text-white rounded-2xl py-4 text-lg font-semibold hover:bg-gray-800 active:bg-gray-900 transition-colors shadow-lg"
+        >
+          Куда едем?
+        </button>
+      </div>
+    </div>
+  );
+}
