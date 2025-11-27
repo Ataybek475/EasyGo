@@ -28,7 +28,7 @@ export const ProfileScreen = ({ setScreen }) => {
         <div className="mt-4 flex items-center space-x-4">
           <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow">
             <img
-              src="/src/assets/ProfileIcon.png"
+              src="/assets/ProfileIcon.png"
               alt="avatar"
               className="w-12 h-12 opacity-70"
             />
@@ -52,21 +52,21 @@ export const ProfileScreen = ({ setScreen }) => {
       <div className="px-5 -mt-10 space-y-3 relative z-10">
         {/* ГРУППА 1 */}
         <div className="space-y-2 bg-[#1D1B20] rounded-2xl overflow-hidden shadow-sm">
-          <MenuCard icon="/src/assets/1.png" title="Способы оплаты" />
-          <MenuCard icon="/src/assets/promo.png" title="Ввести промокод" />
+          <MenuCard icon="1.png" title="Способы оплаты" />
+          <MenuCard icon="promo.png" title="Ввести промокод" />
         </div>
 
         {/* ГРУППА 2 */}
         <div className="space-y-2 bg-[#1D1B20] rounded-2xl overflow-hidden shadow-sm">
-          <MenuCard icon="/src/assets/history.png" title="История поездок" />
-          <MenuCard icon="/src/assets/bell.png" title="Уведомления" />
-          <MenuCard icon="/src/assets/map-pin.png" title="Мои адреса" />
+          <MenuCard icon="history.png" title="История поездок" />
+          <MenuCard icon="bell.png" title="Уведомления" />
+          <MenuCard icon="map-pin.png" title="Мои адреса" />
         </div>
 
         {/* ГРУППА 3 */}
         <div className="space-y-2 bg-[#1D1B20] rounded-2xl overflow-hidden shadow-sm">
-          <MenuCard icon="/src/assets/settings.png" title="Настройки" />
-          <MenuCard icon="/src/assets/info.png" title="Информация" />
+          <MenuCard icon="settings.png" title="Настройки" />
+          <MenuCard icon="info.png" title="Информация" />
         </div>
       </div>
     </div>
@@ -79,7 +79,7 @@ function MenuCard({ icon, title }) {
     <div className="bg-[#1D1B20] text-white py-3 px-4 flex justify-between items-center border-b border-[#2D2B30] last:border-b-0">
       <div className="flex items-center space-x-3">
         <div className="w-8 h-8 bg-[#2D2B30] rounded-lg flex items-center justify-center">
-          <img src={icon} alt={title} className="w-4 h-4 opacity-90" />
+          <img src={`/assets/${icon}`} alt={title} className="w-4 h-4 opacity-90" />
         </div>
         <span className="text-base font-medium">{title}</span>
       </div>

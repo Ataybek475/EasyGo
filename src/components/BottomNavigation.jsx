@@ -1,23 +1,22 @@
-// components/BottomNavigation.jsx
 import React from 'react';
 
 export const BottomNavigation = ({ currentScreen, setScreen }) => {
   const navItems = [
     {
       key: 'support',
-      icon: '/src/assets/SupportEasyGo!.png',
+      icon: '/assets/SupportEasyGo!.png',
       label: 'Поддержка',
       screen: 'support'
     },
     {
       key: 'home',
-      icon: '/src/assets/MapEasyGo!.png',
+      icon: '/assets/MapEasyGo!.png',
       label: 'Карта',
       screen: 'home'
     },
     {
       key: 'profile',
-      icon: '/src/assets/ProfileEasyGo!.png',
+      icon: '/assets/ProfileEasyGo!.png',
       label: 'Профиль',
       screen: 'profile'
     }

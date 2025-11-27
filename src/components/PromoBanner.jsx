@@ -1,4 +1,3 @@
-// components/PromoBanner.jsx
 import React from 'react';
 
 export const PromoBanner = () => {
