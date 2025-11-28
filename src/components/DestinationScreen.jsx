@@ -1,3 +1,4 @@
+// components/DestinationScreen.jsx
 import React, { useState, useEffect } from "react";
 
 export const DestinationScreen = ({ setScreen }) => {
@@ -33,13 +34,28 @@ export const DestinationScreen = ({ setScreen }) => {
           ←
         </button>
         
-        {/* Логотип с фиолетовым Go! */}
+        {/* Логотип с градиентным Go! */}
         <div className="text-3xl font-bold text-black notranslate">
-          Easy<span className="text-purple-600">Go!</span>
+          Easy<span 
+            className="font-bold"
+            style={{
+              background: 'linear-gradient(90deg, #AE00FF 0%, #D06CFF 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}
+          >
+            Go!
+          </span>
         </div>
 
-        {/* Promo Banner */}
-        <div className="mt-4 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-2xl p-4 flex justify-between items-center">
+        {/* Promo Banner с градиентом */}
+        <div 
+          className="mt-4 text-white rounded-2xl p-4 flex justify-between items-center"
+          style={{
+            background: 'linear-gradient(90deg, #AE00FF 0%, #D06CFF 100%)'
+          }}
+        >
           <div>
             <div className="font-semibold">Скидка 20% на</div>
             <div className="font-semibold">первую поездку</div>

@@ -1,3 +1,4 @@
+// components/EasyGOMockup.jsx
 import React, { useState, useEffect, useRef } from "react";
 
 export default function EasyGOMockup({ setScreen }) {
@@ -21,14 +22,6 @@ export default function EasyGOMockup({ setScreen }) {
 
     return () => clearInterval(interval);
   }, []);
-
-  const handleZoomIn = () => {
-    setScale(prev => Math.min(prev + 0.2, 3));
-  };
-
-  const handleZoomOut = () => {
-    setScale(prev => Math.max(prev - 0.2, 0.5));
-  };
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -72,11 +65,6 @@ export default function EasyGOMockup({ setScreen }) {
 
   const handleTouchEnd = () => {
     setIsDragging(false);
-  };
-
-  const resetPosition = () => {
-    setPosition({ x: 0, y: 0 });
-    setScale(1);
   };
 
   return (
@@ -147,30 +135,6 @@ export default function EasyGOMockup({ setScreen }) {
             <div className="absolute top-1/3 right-1/4 w-10 h-10 bg-yellow-400 rounded-full border-3 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute bottom-2/5 left-1/4 w-10 h-10 bg-yellow-400 rounded-full border-3 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
           </div>
-
-          {/* Кнопка текущего местоположения */}
-          <button 
-            onClick={resetPosition}
-            className="absolute bottom-32 right-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center z-20 hover:bg-gray-100 active:bg-gray-200 transition-colors"
-          >
-            <span className="text-xl">📍</span>
-          </button>
-
-          {/* Панель масштабирования */}
-          <div className="absolute top-20 right-4 bg-white rounded-xl shadow-lg z-20 overflow-hidden">
-            <button 
-              onClick={handleZoomIn}
-              className="w-12 h-12 flex items-center justify-center border-b border-gray-200 hover:bg-gray-100 active:bg-gray-200 transition-colors"
-            >
-              <span className="text-xl font-bold text-gray-700">+</span>
-            </button>
-            <button 
-              onClick={handleZoomOut}
-              className="w-12 h-12 flex items-center justify-center hover:bg-gray-100 active:bg-gray-200 transition-colors"
-            >
-              <span className="text-xl font-bold text-gray-700">−</span>
-            </button>
-          </div>
         </div>
       </div>
 
@@ -183,15 +147,34 @@ export default function EasyGOMockup({ setScreen }) {
 
         {/* Header с текстовым логотипом */}
         <header className="px-6 pt-2">
-          {/* Логотип с фиолетовым Go! */}
+          {/* Логотип с градиентным Go! */}
           <div className="text-3xl font-bold text-black notranslate">
-            Easy<span className="text-purple-600">Go!</span>
+            Easy<span 
+              className="font-bold"
+              style={{
+                background: 'linear-gradient(90deg, #AE00FF 0%, #D06CFF 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
+              Go!
+            </span>
           </div>
 
-          {/* Promo Banner - ВЕСЬ БАННЕР ПЕРЕМЕЩЕН ВЛЕВО С ТОЧНЫМИ РАЗМЕРАМИ */}
+          {/* Promo Banner с градиентом */}
           <div 
-            className="mt-4 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-2xl p-4 ml-0"
-            style={{ width: '189px', height: '84px' }}
+            className="mt-4 text-white p-4"
+            style={{ 
+              width: '189px', 
+              height: '84px', 
+              marginLeft: '-24px',
+              borderTopLeftRadius: '0px',
+              borderBottomLeftRadius: '0px',
+              borderTopRightRadius: '16px',
+              borderBottomRightRadius: '16px',
+              background: 'linear-gradient(90deg, #AE00FF 0%, #D06CFF 100%)'
+            }}
           >
             <div className="h-full flex flex-col justify-center">
               <div className="font-semibold text-sm">Скидка 20% на</div>
@@ -204,13 +187,46 @@ export default function EasyGOMockup({ setScreen }) {
         </header>
       </div>
 
-      {/* Search Button поверх карты */}
-      <div className="absolute bottom-24 left-6 right-6 z-10">
+      {/* Кнопка "Куда едем?" как на изображении */}
+      <div 
+        className="absolute left-1/2 transform -translate-x-1/2 z-10" 
+        style={{ bottom: "121px" }}
+      >
         <button
           onClick={() => setScreen("destination")}
-          className="w-full bg-black text-white rounded-2xl py-4 text-lg font-semibold hover:bg-gray-800 active:bg-gray-900 transition-colors shadow-lg"
+          className="text-white text-lg font-semibold hover:opacity-90 active:opacity-80 transition shadow-lg flex items-center gap-3"
+          style={{
+            width: "199px",
+            height: "55px",
+            backgroundColor: "#AE00FF",
+            borderRadius: "30px",
+            paddingLeft: "10px",
+          }}
         >
-          Куда едем?
+          {/* Круг с иконкой */}
+          <div 
+            className="flex items-center justify-center" 
+            style={{
+              width: "38px",
+              height: "38px",
+              backgroundColor: "#A100F5",
+              borderRadius: "50%",
+            }}
+          >
+            {/* Иконка лупы */}
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="20" 
+              height="20" 
+              fill="white" 
+              viewBox="0 0 24 24"
+            >
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 5L20.5 19l-5-5zm-6 0C8.01 14 6 11.99 6 9.5S8.01 5 10.5 5 15 7.01 15 9.5 12.99 14 10.5 14z"/>
+            </svg>
+          </div>
+
+          {/* Текст */}
+          <span>Куда едем?</span>
         </button>
       </div>
     </div>
