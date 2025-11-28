@@ -6,20 +6,29 @@ export const BottomNavigation = ({ currentScreen, setScreen }) => {
     {
       key: 'support',
       icon: '/src/assets/SupportEasyGo!.png',
+      activeIcon: '/src/assets/SupportEasyGo!2.png',
       label: 'Поддержка',
-      screen: 'support'
+      screen: 'support',
+      width: '30px',
+      height: '28px'
     },
     {
       key: 'home',
       icon: '/src/assets/MapEasyGo!.png',
+      activeIcon: '/src/assets/MapEasyGo!2.png',
       label: 'Карта',
-      screen: 'home'
+      screen: 'home',
+      width: '24px',
+      height: '30px'
     },
     {
       key: 'profile',
       icon: '/src/assets/ProfileEasyGo!.png',
+      activeIcon: '/src/assets/ProfileEasyGo!2.png',
       label: 'Профиль',
-      screen: 'profile'
+      screen: 'profile',
+      width: '25px',
+      height: '24px'
     }
   ];
 
@@ -45,7 +54,7 @@ export const BottomNavigation = ({ currentScreen, setScreen }) => {
           left: buttonRect.left - navRect.left + (buttonRect.width - 100) / 2,
           width: '100px',
           height: '67px',
-          borderRadius: '33.5px', // 50% от высоты для максимального закругления
+          borderRadius: '33.5px',
           backgroundColor: '#CCCCCC',
           transition: 'left 0.3s ease-in-out'
         });
@@ -67,7 +76,7 @@ export const BottomNavigation = ({ currentScreen, setScreen }) => {
       {/* Навигация */}
       <nav 
         ref={navRef}
-        className="bg-white border-t border-gray-200 px-6 py-4 rounded-[40px] shadow-lg relative z-20 overflow-hidden"
+        className="bg-white border-t border-gray-200 px-10 py-4 rounded-[40px] shadow-lg relative z-20 overflow-hidden"
         style={{ 
           width: '352px', 
           height: '77px'
@@ -79,12 +88,12 @@ export const BottomNavigation = ({ currentScreen, setScreen }) => {
           style={indicatorStyle}
         />
         
-        <div className="flex justify-around items-center h-full relative z-10">
+        <div className="flex justify-between items-center h-full relative z-10">
           {navItems.map((item) => (
             <button
               key={item.key}
               onClick={() => setScreen(item.screen)}
-              className={`flex flex-col items-center gap-1 transition-all duration-300 ease-in-out relative z-10 ${
+              className={`flex flex-col items-center gap-2 transition-all duration-300 ease-in-out relative z-10 ${
                 currentScreen === item.screen 
                   ? 'text-purple-600 font-semibold' 
                   : 'text-gray-600 hover:text-purple-500'
@@ -94,9 +103,13 @@ export const BottomNavigation = ({ currentScreen, setScreen }) => {
                 currentScreen === item.screen ? 'scale-110' : 'scale-100'
               }`}>
                 <img 
-                  src={item.icon} 
+                  src={currentScreen === item.screen ? item.activeIcon : item.icon} 
                   alt={item.label} 
-                  className="w-6 h-6 object-contain relative z-10"
+                  className="object-contain relative z-10"
+                  style={{
+                    width: item.width,
+                    height: item.height
+                  }}
                 />
               </div>
               <span className="text-xs transition-colors duration-300 relative z-10">{item.label}</span>
@@ -106,4 +119,4 @@ export const BottomNavigation = ({ currentScreen, setScreen }) => {
       </nav>
     </div>
   );
-};  
+};

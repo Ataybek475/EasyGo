@@ -68,7 +68,7 @@ export default function EasyGOMockup({ setScreen }) {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col pb-24 relative">
+    <div className="h-full bg-white flex flex-col relative overflow-hidden">
       {/* КАРТА НА ВЕСЬ ЭКРАН КАК ФОН */}
       <div className="absolute inset-0">
         {/* Контейнер карты */}
@@ -139,7 +139,7 @@ export default function EasyGOMockup({ setScreen }) {
       </div>
 
       {/* Контент поверх карты */}
-      <div className="relative z-10 bg-transparent">
+      <div className="relative z-10 bg-transparent flex-shrink-0">
         {/* Status Bar */}
         <div className="pt-2 px-4 text-center">
           <div className="text-black font-medium">{currentTime}</div>
@@ -147,8 +147,16 @@ export default function EasyGOMockup({ setScreen }) {
 
         {/* Header с текстовым логотипом */}
         <header className="px-6 pt-2">
-          {/* Логотип с градиентным Go! */}
-          <div className="text-3xl font-bold text-black notranslate">
+          {/* Увеличенный логотип с градиентным Go! */}
+          <div 
+            className="font-bold notranslate"
+            style={{
+              width: '350px',
+              height: '60px',
+              fontSize: '48px',
+              lineHeight: '60px'
+            }}
+          >
             Easy<span 
               className="font-bold"
               style={{
@@ -187,28 +195,29 @@ export default function EasyGOMockup({ setScreen }) {
         </header>
       </div>
 
-      {/* Кнопка "Куда едем?" как на изображении */}
+      {/* Кнопка "Куда едем?" с новыми размерами и цветом */}
       <div 
-        className="absolute left-1/2 transform -translate-x-1/2 z-10" 
+        className="absolute left-1/2 transform -translate-x-1/2 z-10 flex-shrink-0" 
         style={{ bottom: "121px" }}
       >
         <button
           onClick={() => setScreen("destination")}
-          className="text-white text-lg font-semibold hover:opacity-90 active:opacity-80 transition shadow-lg flex items-center gap-3"
+          className="text-white font-semibold hover:opacity-90 active:opacity-80 transition shadow-lg flex items-center gap-4"
           style={{
-            width: "199px",
-            height: "55px",
+            width: "213px",
+            height: "60px",
             backgroundColor: "#AE00FF",
             borderRadius: "30px",
-            paddingLeft: "10px",
+            paddingLeft: "16px",
+            fontSize: "18px"
           }}
         >
           {/* Круг с иконкой */}
           <div 
             className="flex items-center justify-center" 
             style={{
-              width: "38px",
-              height: "38px",
+              width: "40px",
+              height: "40px",
               backgroundColor: "#A100F5",
               borderRadius: "50%",
             }}

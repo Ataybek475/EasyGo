@@ -11,7 +11,6 @@ function App() {
   const [navVisible, setNavVisible] = useState(false);
 
   useEffect(() => {
-    // Плавное появление навигации при загрузке
     setNavVisible(true);
   }, []);
 
@@ -24,7 +23,7 @@ function App() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto min-h-screen bg-white relative overflow-hidden">
+    <div className="w-full max-w-md mx-auto h-screen bg-white relative overflow-hidden">
       {/* Черный размывающийся фон снизу */}
       <div 
         className={`fixed left-1/2 transform -translate-x-1/2 bg-gradient-to-t from-black/30 via-black/15 to-transparent rounded-[40px] pointer-events-none z-10 transition-all duration-500 ${
@@ -37,7 +36,7 @@ function App() {
         }}
       ></div>
       
-      <div className={`min-h-screen pb-24 ${transition}`}>
+      <div className={`h-full overflow-hidden ${transition}`}>
         {screen === "home" && <EasyGOMockup setScreen={handleSetScreen} />}
         {screen === "destination" && <DestinationScreen setScreen={handleSetScreen} />}
         {screen === "profile" && <ProfileScreen setScreen={handleSetScreen} />}

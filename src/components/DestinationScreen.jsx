@@ -19,14 +19,14 @@ export const DestinationScreen = ({ setScreen }) => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col pb-20">
+    <div className="h-full bg-white flex flex-col overflow-hidden">
       {/* Status Bar */}
-      <div className="pt-2 px-4 text-center">
+      <div className="pt-2 px-4 text-center flex-shrink-0">
         <div className="text-black font-medium">{currentTime}</div>
       </div>
 
       {/* Header с текстовым логотипом */}
-      <div className="px-6 pt-2">
+      <div className="px-6 pt-2 flex-shrink-0">
         <button 
           onClick={() => setScreen("home")}
           className="text-black text-lg mb-4"
@@ -34,8 +34,16 @@ export const DestinationScreen = ({ setScreen }) => {
           ←
         </button>
         
-        {/* Логотип с градиентным Go! */}
-        <div className="text-3xl font-bold text-black notranslate">
+        {/* Увеличенный логотип с градиентным Go! */}
+        <div 
+          className="font-bold notranslate"
+          style={{
+            width: '350px',
+            height: '60px',
+            fontSize: '48px',
+            lineHeight: '60px'
+          }}
+        >
           Easy<span 
             className="font-bold"
             style={{
@@ -67,7 +75,7 @@ export const DestinationScreen = ({ setScreen }) => {
       </div>
 
       {/* Destination Form */}
-      <div className="flex-1 px-6 mt-6">
+      <div className="flex-1 px-6 mt-6 overflow-y-auto pb-4">
         <div className="space-y-6">
           {/* Откуда */}
           <div>

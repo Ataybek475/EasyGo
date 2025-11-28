@@ -1,3 +1,4 @@
+// src/hooks/useCurrentTime.js
 import { useState, useEffect } from 'react';
 
 export const useCurrentTime = () => {
