@@ -68,10 +68,9 @@ export default function EasyGOMockup({ setScreen }) {
   };
 
   return (
-    <div className="h-full bg-white flex flex-col relative overflow-hidden">
+    <div className="h-screen bg-white flex flex-col relative overflow-hidden">
       {/* КАРТА НА ВЕСЬ ЭКРАН КАК ФОН */}
       <div className="absolute inset-0">
-        {/* Контейнер карты */}
         <div 
           ref={mapRef}
           className={`w-full h-full relative overflow-hidden ${
@@ -85,7 +84,6 @@ export default function EasyGOMockup({ setScreen }) {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Стилизованная карта с трансформациями */}
           <div 
             className="absolute inset-0 bg-gradient-to-br from-blue-400 to-green-400"
             style={{
@@ -112,13 +110,6 @@ export default function EasyGOMockup({ setScreen }) {
             <div className="absolute top-1/4 left-1/4 w-20 h-28 bg-gray-700 rounded-lg transform -translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute top-1/3 right-1/3 w-24 h-32 bg-gray-800 rounded-lg transform -translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute bottom-1/4 left-1/3 w-28 h-36 bg-gray-900 rounded-lg transform -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-1/3 right-1/4 w-16 h-24 bg-gray-700 rounded-lg transform -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute top-2/3 left-1/5 w-22 h-26 bg-gray-800 rounded-lg transform -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute top-1/5 right-1/5 w-26 h-30 bg-gray-900 rounded-lg transform -translate-x-1/2 -translate-y-1/2"></div>
-            
-            {/* Парки/зеленые зоны */}
-            <div className="absolute top-2/5 left-2/5 w-40 h-40 bg-green-500 rounded-xl transform -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-1/5 right-2/5 w-36 h-36 bg-green-500 rounded-xl transform -translate-x-1/2 -translate-y-1/2"></div>
             
             {/* Текущее местоположение пользователя */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
@@ -131,18 +122,15 @@ export default function EasyGOMockup({ setScreen }) {
             {/* Маркеры машин такси */}
             <div className="absolute top-2/5 left-2/5 w-10 h-10 bg-yellow-400 rounded-full border-3 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute top-3/5 right-2/5 w-10 h-10 bg-yellow-400 rounded-full border-3 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-1/3 left-2/3 w-10 h-10 bg-yellow-400 rounded-full border-3 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute top-1/3 right-1/4 w-10 h-10 bg-yellow-400 rounded-full border-3 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-2/5 left-1/4 w-10 h-10 bg-yellow-400 rounded-full border-3 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2"></div>
           </div>
         </div>
       </div>
 
       {/* Контент поверх карты */}
-      <div className="relative z-10 bg-transparent flex-shrink-0">
+      <div className="relative z-10 bg-transparent">
         {/* Status Bar */}
-        <div className="pt-2 px-4 text-center">
-          <div className="text-black font-medium">{currentTime}</div>
+        <div className="pt-4 px-4 text-center">
+          <div className="text-black font-medium text-lg">{currentTime}</div>
         </div>
 
         {/* Header с текстовым логотипом */}
@@ -172,7 +160,7 @@ export default function EasyGOMockup({ setScreen }) {
 
           {/* Promo Banner с градиентом */}
           <div 
-            className="mt-4 text-white p-4"
+            className="mt-2 text-white p-4"
             style={{ 
               width: '189px', 
               height: '84px', 
@@ -195,10 +183,10 @@ export default function EasyGOMockup({ setScreen }) {
         </header>
       </div>
 
-      {/* Кнопка "Куда едем?" с новыми размерами и цветом */}
+      {/* Кнопка "Куда едем?" */}
       <div 
-        className="absolute left-1/2 transform -translate-x-1/2 z-10 flex-shrink-0" 
-        style={{ bottom: "121px" }}
+        className="absolute left-1/2 transform -translate-x-1/2 z-20" 
+        style={{ bottom: "140px" }}
       >
         <button
           onClick={() => setScreen("destination")}

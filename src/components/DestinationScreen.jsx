@@ -1,114 +1,110 @@
 // components/DestinationScreen.jsx
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-export const DestinationScreen = ({ setScreen }) => {
-  const [currentTime, setCurrentTime] = useState("");
+// ИКОНКА МАШИНЫ
+const CarIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="5" y="9" width="14" height="6" rx="2" stroke="white" strokeWidth="2"/>
+    <path d="M7 9L9 6H15L17 9" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+    <circle cx="8" cy="16" r="1.5" fill="white"/>
+    <circle cx="16" cy="16" r="1.5" fill="white"/>
+  </svg>
+);
 
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      setCurrentTime(`${hours}:${minutes}`);
-    };
+// Иконка карты
+const CardIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M21 7.2L21 16.8C21 18.0065 20.4732 19.165 19.5355 20.0039C18.5979 20.8427 17.3377 21.3195 16 21.3195H8C6.66231 21.3195 5.40214 20.8427 4.46447 20.0039C3.5268 19.165 3 18.0065 3 16.8V7.2C3 5.99351 3.5268 4.83501 4.46447 3.99613C5.40214 3.15725 6.66231 2.68048 8 2.68048H16C17.3377 2.68048 18.5979 3.15725 19.5355 3.99613C20.4732 4.83501 21 5.99351 21 7.2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M3 8H21" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <rect x="7" y="14" width="6" height="3" rx="1.5" fill="white"/>
+  </svg>
+);
 
-    updateTime();
-    const interval = setInterval(updateTime, 60000);
+// Иконка геолокации/точки
+const LocationCircleIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="11" fill="white" stroke="#9C27B0" strokeWidth="2.5"/>
+    <circle cx="12" cy="12" r="5" fill="#9C27B0"/>
+  </svg>
+);
 
-    return () => clearInterval(interval);
-  }, []);
+// Иконка пина/метки
+const PinIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2C16.4183 2 20 5.58172 20 10C20 15.2559 14.5458 21.5714 12.8392 23.3642C12.3906 23.8344 11.6094 23.8344 11.1608 23.3642C9.45421 21.5714 4 15.2559 4 10C4 5.58172 7.58172 2 12 2ZM12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7Z" fill="#9C27B0"/>
+  </svg>
+);
 
+// Компонент, отображаемый в модальном окне
+export const DestinationScreen = ({ onClose }) => {
   return (
-    <div className="h-full bg-white flex flex-col overflow-hidden">
-      {/* Status Bar */}
-      <div className="pt-2 px-4 text-center flex-shrink-0">
-        <div className="text-black font-medium">{currentTime}</div>
+    <div className="bg-white font-sans flex flex-col h-full" style={{ borderRadius: '55px 55px 0 0' }}>
+      
+      {/* 1. Handlebar (Ручка для перетаскивания) */}
+      <div className="text-center py-4 flex-shrink-0">
+        <div className="w-10 h-1 bg-gray-300 rounded-full mx-auto" />
       </div>
 
-      {/* Header с текстовым логотипом */}
-      <div className="px-6 pt-2 flex-shrink-0">
-        <button 
-          onClick={() => setScreen("home")}
-          className="text-black text-lg mb-4"
-        >
-          ←
-        </button>
+      {/* 2. Destination Form (Форма адресов и оплаты) */}
+      <div className="flex-1 px-6 space-y-4 overflow-y-auto pb-6">
         
-        {/* Увеличенный логотип с градиентным Go! */}
-        <div 
-          className="font-bold notranslate"
-          style={{
-            width: '350px',
-            height: '60px',
-            fontSize: '48px',
-            lineHeight: '60px'
-          }}
-        >
-          Easy<span 
-            className="font-bold"
-            style={{
-              background: 'linear-gradient(90deg, #AE00FF 0%, #D06CFF 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
-            }}
-          >
-            Go!
-          </span>
+        {/* ОТКУДА (Ваше местоположение) */}
+        <div>
+          <h2 className="font-bold mb-2 text-base text-gray-700">Откуда</h2>
+          <div className="flex items-center bg-gray-100 rounded-2xl p-4 border border-gray-200">
+            <div className="mr-3 flex-shrink-0">
+              <LocationCircleIcon />
+            </div>
+            <span className="text-gray-600 font-medium">Ваше местоположение</span>
+          </div>
         </div>
 
-        {/* Promo Banner с градиентом */}
-        <div 
-          className="mt-4 text-white rounded-2xl p-4 flex justify-between items-center"
-          style={{
-            background: 'linear-gradient(90deg, #AE00FF 0%, #D06CFF 100%)'
-          }}
-        >
-          <div>
-            <div className="font-semibold">Скидка 20% на</div>
-            <div className="font-semibold">первую поездку</div>
-          </div>
-          <div className="bg-black text-white px-3 py-1 rounded-full text-sm font-semibold">
-            EASYGO25
+        {/* КУДА (Выбрать на карте) */}
+        <div>
+          <h2 className="font-bold mb-2 text-base text-gray-700">Куда</h2>
+          <div className="flex items-center bg-gray-100 rounded-2xl p-4 border border-gray-200">
+            <div className="mr-3 flex-shrink-0">
+              <PinIcon />
+            </div>
+            <span className="text-gray-600 font-medium">Выбрать на карте</span>
           </div>
         </div>
-      </div>
 
-      {/* Destination Form */}
-      <div className="flex-1 px-6 mt-6 overflow-y-auto pb-4">
-        <div className="space-y-6">
-          {/* Откуда */}
-          <div>
-            <h2 className="font-bold mb-3 text-gray-700">Откуда</h2>
-            <div className="flex items-center border border-gray-300 rounded-2xl p-4">
-              <span className="mr-3">📍</span>
-              <span>Ваше местоположение</span>
+        {/* Способ оплаты */}
+        <button 
+          onClick={() => console.log("Payment method clicked")} 
+          className="w-full text-left transition duration-150 transform active:scale-[0.99]"
+        >
+          <div className="flex items-center bg-gray-800 text-white rounded-2xl p-4 shadow-lg">
+            <div className="mr-3 flex-shrink-0">
+              <CardIcon />
             </div>
-          </div>
-
-          {/* Куда */}
-          <div>
-            <h2 className="font-bold mb-3 text-gray-700">Куда</h2>
-            <div className="flex items-center border border-gray-300 rounded-2xl p-4">
-              <span className="mr-3">📍</span>
-              <span>Выбрать на карте</span>
-            </div>
-          </div>
-
-          {/* Способ оплаты */}
-          <div className="flex items-center bg-black text-white rounded-2xl p-4">
-            <span className="mr-3">💳</span>
             <div>
-              <p className="font-bold">Способ оплаты</p>
+              <p className="font-bold text-base">Способ оплаты</p>
               <p className="text-sm opacity-70">Карта</p>
             </div>
           </div>
-
-          {/* Search Button */}
-          <button className="w-full bg-purple-600 text-white rounded-2xl py-4 text-lg font-bold">
-            🚗 Искать машину
-          </button>
-        </div>
+        </button>
+        
+        {/* Search Button (Фиолетовый градиент) */}
+        <button 
+          onClick={() => {
+            console.log("Search car clicked");
+            onClose();
+          }}
+          className="w-full rounded-2xl py-4 text-lg font-bold shadow-lg transition duration-150 transform active:scale-[0.99] mt-4"
+          style={{
+            background: 'linear-gradient(90deg, #9C27B0 0%, #E040FB 100%)', 
+            color: 'white'
+          }}
+        >
+          <div className="flex items-center justify-center">
+            <div className="mr-3">
+              <CarIcon />
+            </div>
+            Искать машину
+          </div>
+        </button>
       </div>
     </div>
   );
