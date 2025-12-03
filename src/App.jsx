@@ -12,11 +12,13 @@ function App() {
   const [isDestinationModalOpen, setIsDestinationModalOpen] = useState(false);
   const [modalAnimation, setModalAnimation] = useState("");
 
+  // Показать навигацию после загрузки
   useEffect(() => {
     setNavVisible(true);
   }, []);
 
   const handleSetScreen = (newScreen) => {
+    // Если это экран назначения - открываем модальное окно
     if (newScreen === "destination") {
       setIsDestinationModalOpen(true);
       setTimeout(() => {
@@ -25,6 +27,7 @@ function App() {
       return; 
     }
     
+    // Анимация перехода для других экранов
     setTransition("fade-out");
     setTimeout(() => {
       setScreen(newScreen);
@@ -33,6 +36,7 @@ function App() {
   };
 
   const closeModal = () => {
+    // Анимация закрытия модального окна
     setModalAnimation("slide-down");
     setTimeout(() => {
       setIsDestinationModalOpen(false);
@@ -42,6 +46,7 @@ function App() {
 
   return (
     <>
+      {/* Встроенные стили для анимаций */}
       <style>
         {`
           .fade-out {
@@ -60,48 +65,69 @@ function App() {
             transform: translateY(100%);
             transition: transform 0.3s ease-in;
           }
+          
+          /* Дополнительные стили для улучшения UX */
+          .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+          }
+          
+          .bottom-nav-shadow {
+            box-shadow: 0px -4px 20px rgba(0, 0, 0, 0.1);
+          }
         `}
       </style>
       
+      {/* Основной контейнер приложения */}
       <div className="w-full max-w-md mx-auto min-h-screen bg-white relative">
         
-        {/* Основной контент - ВСЕГДА виден */}
+        {/* Основной контент */}
         <div className={`min-h-screen ${transition}`}>
           {screen === "home" && <EasyGOMockup setScreen={handleSetScreen} />}
           {screen === "profile" && <ProfileScreen setScreen={handleSetScreen} />}
         </div>
         
-        {/* Навигация */}
+        {/* Панель навигации (фиксированная внизу) */}
         <div 
-          className={`fixed left-1/2 transform -translate-x-1/2 z-20 transition-all duration-500 ${
+          className={`fixed left-1/2 transform -translate-x-1/2 z-20 transition-all duration-500 bottom-nav-shadow ${
             navVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
           style={{ 
             width: '352px', 
             height: '77px', 
             bottom: '18px',
-            borderRadius: '55px'
+            borderRadius: '55px',
+            backgroundColor: 'white'
           }}
         >
           <BottomNavigation currentScreen={screen} setScreen={handleSetScreen} />
         </div>
         
-        {/* МОДАЛЬНОЕ ОКНО */}
+        {/* Модальное окно назначения (Destination) */}
         {isDestinationModalOpen && (
-          <div className="fixed inset-0 z-30 flex justify-center items-end">
+          <>
+            {/* Затемнение фона */}
             <div 
-              className={`w-full max-w-md bg-white shadow-2xl transform ${
-                modalAnimation || "translate-y-full"
-              }`}
-              style={{ 
-                borderRadius: '55px 55px 0 0',
-                height: '50%', // Увеличил высоту для лучшего отображения
-                minHeight: '50%'
-              }}
-            >
-              <DestinationScreen onClose={closeModal} />
+              className="fixed inset-0 z-30 modal-overlay"
+              onClick={closeModal}
+            />
+            
+            {/* Само модальное окно */}
+            <div className="fixed inset-0 z-40 flex justify-center items-end pointer-events-none">
+              <div 
+                className={`w-full max-w-md bg-white shadow-2xl transform pointer-events-auto ${
+                  modalAnimation || "translate-y-full"
+                }`}
+                style={{ 
+                  borderRadius: '55px 55px 0 0',
+                  height: '55%',
+                  minHeight: '55%',
+                  maxHeight: '90vh'
+                }}
+              >
+                <DestinationScreen onClose={closeModal} />
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </>

@@ -2,26 +2,11 @@
 import React, { useState, useEffect, useRef } from "react";
 
 export default function EasyGOMockup({ setScreen }) {
-  const [currentTime, setCurrentTime] = useState("");
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
   const mapRef = useRef(null);
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      setCurrentTime(`${hours}:${minutes}`);
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -128,14 +113,14 @@ export default function EasyGOMockup({ setScreen }) {
 
       {/* Контент поверх карты */}
       <div className="relative z-10 bg-transparent">
-        {/* Status Bar */}
+        {/* Status Bar - ТЕПЕРЬ БЕЗ ВРЕМЕНИ */}
         <div className="pt-4 px-4 text-center">
-          <div className="text-black font-medium text-lg">{currentTime}</div>
+          {/* Время убрано */}
         </div>
 
         {/* Header с текстовым логотипом */}
-        <header className="px-6 pt-2">
-          {/* Увеличенный логотип с градиентным Go! */}
+        <header className="px-6 pt-6"> {/* Увеличил pt для компенсации убранного времени */}
+          {/* Увеличенный логотип с однотонным Go! */}
           <div 
             className="font-bold notranslate"
             style={{
@@ -146,19 +131,13 @@ export default function EasyGOMockup({ setScreen }) {
             }}
           >
             Easy<span 
-              className="font-bold"
-              style={{
-                background: 'linear-gradient(90deg, #AE00FF 0%, #D06CFF 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}
+              className="font-bold text-purple-600"
             >
               Go!
             </span>
           </div>
 
-          {/* Promo Banner с градиентом */}
+          {/* Promo Banner с перевернутым градиентом */}
           <div 
             className="mt-2 text-white p-4"
             style={{ 
@@ -169,7 +148,8 @@ export default function EasyGOMockup({ setScreen }) {
               borderBottomLeftRadius: '0px',
               borderTopRightRadius: '16px',
               borderBottomRightRadius: '16px',
-              background: 'linear-gradient(90deg, #AE00FF 0%, #D06CFF 100%)'
+              // Перевернутый градиент: теперь справа налево
+              background: 'linear-gradient(270deg, #AE00FF 0%, #D06CFF 100%)'
             }}
           >
             <div className="h-full flex flex-col justify-center">
@@ -183,10 +163,11 @@ export default function EasyGOMockup({ setScreen }) {
         </header>
       </div>
 
-      {/* Кнопка "Куда едем?" */}
+      {/* Кнопка "Куда едем?" - ПОДВИНУТА НИЖЕ */}
       <div 
         className="absolute left-1/2 transform -translate-x-1/2 z-20" 
-        style={{ bottom: "140px" }}
+        // Подвинул кнопку ниже (было 140px, стало 100px от нижнего края)
+        style={{ bottom: "100px" }}
       >
         <button
           onClick={() => setScreen("destination")}

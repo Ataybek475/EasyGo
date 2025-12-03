@@ -5,30 +5,24 @@ export const BottomNavigation = ({ currentScreen, setScreen }) => {
   const navItems = [
     {
       key: 'support',
-      icon: '/src/assets/SupportEasyGo!.png',
-      activeIcon: '/src/assets/SupportEasyGo!2.png',
+      icon: 'support',
+      activeIcon: 'support-active',
       label: 'Поддержка',
       screen: 'support',
-      width: '30px',
-      height: '28px'
     },
     {
       key: 'home',
-      icon: '/src/assets/MapEasyGo!.png',
-      activeIcon: '/src/assets/MapEasyGo!2.png',
+      icon: 'home',
+      activeIcon: 'home-active',
       label: 'Карта',
       screen: 'home',
-      width: '24px',
-      height: '30px'
     },
     {
       key: 'profile',
-      icon: '/src/assets/ProfileEasyGo!.png',
-      activeIcon: '/src/assets/ProfileEasyGo!2.png',
+      icon: 'profile',
+      activeIcon: 'profile-active',
       label: 'Профиль',
       screen: 'profile',
-      width: '25px',
-      height: '24px'
     }
   ];
 
@@ -62,27 +56,33 @@ export const BottomNavigation = ({ currentScreen, setScreen }) => {
     }
   };
 
+  // Исправленный iconMap для GitHub Pages
+  const iconMap = {
+    'support': '/EasyGo/assets/SupportEasyGo!.png',
+    'support-active': '/EasyGo/assets/SupportEasyGo!.png',
+    'home': '/EasyGo/assets/map-pin.png',
+    'home-active': '/EasyGo/assets/map-pin.png',
+    'profile': '/EasyGo/assets/ProfileIcon.png',
+    'profile-active': '/EasyGo/assets/ProfileIcon.png',
+  };
+
+  const getIconPath = (iconName, isActive) => {
+    const key = isActive ? `${iconName}-active` : iconName;
+    return iconMap[key] || `/EasyGo/assets/${iconName}.png`;
+  };
+
   return (
     <div className="relative">
-      {/* Черное размытие снизу */}
       <div 
         className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-20 backdrop-blur-sm rounded-[40px] -mt-2"
-        style={{ 
-          width: '352px', 
-          height: '77px'
-        }}
+        style={{ width: '352px', height: '77px' }}
       ></div>
       
-      {/* Навигация */}
       <nav 
         ref={navRef}
         className="bg-white border-t border-gray-200 px-10 py-4 rounded-[40px] shadow-lg relative z-20 overflow-hidden"
-        style={{ 
-          width: '352px', 
-          height: '77px'
-        }}
+        style={{ width: '352px', height: '77px' }}
       >
-        {/* Подвижный фон-индикатор */}
         <div 
           className="absolute top-1/2 transform -translate-y-1/2 z-0"
           style={indicatorStyle}
@@ -102,15 +102,13 @@ export const BottomNavigation = ({ currentScreen, setScreen }) => {
               <div className={`transition-all duration-300 ease-in-out ${
                 currentScreen === item.screen ? 'scale-110' : 'scale-100'
               }`}>
-                <img 
-                  src={currentScreen === item.screen ? item.activeIcon : item.icon} 
-                  alt={item.label} 
-                  className="object-contain relative z-10"
-                  style={{
-                    width: item.width,
-                    height: item.height
-                  }}
-                />
+                <div className="w-6 h-6 flex items-center justify-center">
+                  <img 
+                    src={getIconPath(item.icon, currentScreen === item.screen)} 
+                    alt={item.label}
+                    className="w-5 h-5 object-contain"
+                  />
+                </div>
               </div>
               <span className="text-xs transition-colors duration-300 relative z-10">{item.label}</span>
             </button>
