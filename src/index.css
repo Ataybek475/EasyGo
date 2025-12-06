@@ -4,8 +4,6 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
 }
 
 body {
@@ -20,17 +18,6 @@ body {
   min-height: 100vh;
 }
 
-/* Анимации для переходов между экранами */
-.fade-out {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.fade-in {
-  opacity: 1;
-  transition: opacity 0.2s ease;
-}
-
 /* Стили для предотвращения выделения текста */
 .notranslate {
   -webkit-user-select: none;
@@ -39,20 +26,51 @@ body {
   user-select: none;
 }
 
-/* Кастомные стили для скролла */
-::-webkit-scrollbar {
-  width: 4px;
+/* Анимация для такси */
+@keyframes taxi-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
+.animate-taxi {
+  animation: taxi-pulse 2s infinite;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #c084fc;
-  border-radius: 2px;
+/* Новые анимации для модальных окон */
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #a855f7;
+.fade-in {
+  opacity: 1;
+  transition: opacity 0.2s ease-in;
+}
+
+.slide-up {
+  transform: translateY(0);
+  transition: transform 0.3s ease-out;
+}
+
+.slide-down {
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in;
+}
+
+.text-fade-in {
+  opacity: 1;
+  transition: opacity 0.2s ease-in;
+}
+
+.text-fade-out {
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+}
+
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.bottom-nav-shadow {
+  box-shadow: 0px -4px 20px rgba(0, 0, 0, 0.1);
 }

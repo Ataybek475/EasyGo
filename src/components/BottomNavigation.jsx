@@ -2,29 +2,38 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 export const BottomNavigation = ({ currentScreen, setScreen }) => {
-  const navItems = [
-    {
-      key: 'support',
-      icon: 'support',
-      activeIcon: 'support-active',
-      label: 'Поддержка',
-      screen: 'support',
-    },
-    {
-      key: 'home',
-      icon: 'home',
-      activeIcon: 'home-active',
-      label: 'Карта',
-      screen: 'home',
-    },
-    {
-      key: 'profile',
-      icon: 'profile',
-      activeIcon: 'profile-active',
-      label: 'Профиль',
-      screen: 'profile',
+ const navItems = [
+  {
+    key: 'support',
+    icon: 'support',
+    label: 'Поддержка',
+    screen: 'support',
+    iconPaths: {
+      normal: '/EasyGo/assets/SupportEasyGo!.png',
+      active: '/EasyGo/assets/SupportEasyGo!2.png'
     }
-  ];
+  },
+  {
+    key: 'home',
+    icon: 'home',
+    label: 'Карта',
+    screen: 'main', // Важно: здесь 'main'
+    iconPaths: {
+      normal: '/EasyGo/assets/MapEasyGo!.png',
+      active: '/EasyGo/assets/MapEasyGo!2.png'
+    }
+  },
+  {
+    key: 'profile',
+    icon: 'profile',
+    label: 'Профиль',
+    screen: 'profile',
+    iconPaths: {
+      normal: '/EasyGo/assets/ProfileEasyGo!.png',
+      active: '/EasyGo/assets/ProfileEasyGo!2.png'
+    }
+  }
+]; 
 
   const [indicatorStyle, setIndicatorStyle] = useState({});
   const navRef = useRef(null);
@@ -56,63 +65,70 @@ export const BottomNavigation = ({ currentScreen, setScreen }) => {
     }
   };
 
-  // Исправленный iconMap для GitHub Pages
-  const iconMap = {
-    'support': '/EasyGo/assets/SupportEasyGo!.png',
-    'support-active': '/EasyGo/assets/SupportEasyGo!.png',
-    'home': '/EasyGo/assets/map-pin.png',
-    'home-active': '/EasyGo/assets/map-pin.png',
-    'profile': '/EasyGo/assets/ProfileIcon.png',
-    'profile-active': '/EasyGo/assets/ProfileIcon.png',
-  };
-
-  const getIconPath = (iconName, isActive) => {
-    const key = isActive ? `${iconName}-active` : iconName;
-    return iconMap[key] || `/EasyGo/assets/${iconName}.png`;
+  const getIconPath = (item, isActive) => {
+    return isActive ? item.iconPaths.active : item.iconPaths.normal;
   };
 
   return (
     <div className="relative">
+      {/* Фон с размытием */}
       <div 
         className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-20 backdrop-blur-sm rounded-[40px] -mt-2"
         style={{ width: '352px', height: '77px' }}
       ></div>
       
+      {/* Навигация */}
       <nav 
         ref={navRef}
         className="bg-white border-t border-gray-200 px-10 py-4 rounded-[40px] shadow-lg relative z-20 overflow-hidden"
         style={{ width: '352px', height: '77px' }}
       >
+        {/* Активный индикатор */}
         <div 
-          className="absolute top-1/2 transform -translate-y-1/2 z-0"
+          className="absolute top-1/2 transform -translate-y-1/2 z-0 transition-all duration-300 ease-in-out"
           style={indicatorStyle}
         />
         
         <div className="flex justify-between items-center h-full relative z-10">
-          {navItems.map((item) => (
-            <button
-              key={item.key}
-              onClick={() => setScreen(item.screen)}
-              className={`flex flex-col items-center gap-2 transition-all duration-300 ease-in-out relative z-10 ${
-                currentScreen === item.screen 
-                  ? 'text-purple-600 font-semibold' 
-                  : 'text-gray-600 hover:text-purple-500'
-              }`}
-            >
-              <div className={`transition-all duration-300 ease-in-out ${
-                currentScreen === item.screen ? 'scale-110' : 'scale-100'
-              }`}>
-                <div className="w-6 h-6 flex items-center justify-center">
-                  <img 
-                    src={getIconPath(item.icon, currentScreen === item.screen)} 
-                    alt={item.label}
-                    className="w-5 h-5 object-contain"
-                  />
+          {navItems.map((item) => {
+            const isActive = currentScreen === item.screen;
+            
+            return (
+              <button
+                key={item.key}
+                onClick={() => setScreen(item.screen)}
+                className={`flex flex-col items-center gap-2 transition-all duration-300 ease-in-out relative z-10`}
+              >
+                {/* Контейнер для иконки с анимацией */}
+                <div className={`transition-all duration-300 ease-in-out ${
+                  isActive ? 'scale-110' : 'scale-100'
+                }`}>
+                  <div className="w-6 h-6 flex items-center justify-center relative">
+                    {/* Иконка */}
+                    <img 
+                      src={getIconPath(item, isActive)} 
+                      alt={item.label}
+                      className={`w-5 h-5 object-contain transition-all duration-300 ${
+                        isActive ? 'opacity-100' : 'opacity-80'
+                      }`}
+                    />
+                    
+                    {/* Анимация пульсации для активной иконки */}
+                    {isActive && (
+                      <div className="absolute inset-0 animate-ping bg-purple-400 opacity-20 rounded-full"></div>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <span className="text-xs transition-colors duration-300 relative z-10">{item.label}</span>
-            </button>
-          ))}
+                
+                {/* Текст - всегда черный */}
+                <span className={`text-xs transition-all duration-300 relative z-10 text-black ${
+                  isActive ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-90'
+                }`}>
+                  {item.label}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </nav>
     </div>

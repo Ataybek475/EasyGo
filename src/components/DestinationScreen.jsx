@@ -1,5 +1,5 @@
 // components/DestinationScreen.jsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 // ИКОНКА МАШИНЫ
 const CarIcon = () => (
@@ -36,76 +36,140 @@ const PinIcon = () => (
 );
 
 // Компонент, отображаемый в модальном окне
-export const DestinationScreen = ({ onClose }) => {
+export const DestinationScreen = ({ onClose, isOpen }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      // Анимация появления
+      setTimeout(() => {
+        setIsVisible(true);
+      }, 10);
+    } else {
+      setIsVisible(false);
+    }
+  }, [isOpen]);
+
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(() => {
+      onClose();
+    }, 300);
+  };
+
+  const handleSearchCar = () => {
+    setIsVisible(false);
+    setTimeout(() => {
+      onClose();
+    }, 300);
+  };
+
+  // Если компонент не открыт, не рендерим ничего
+  if (!isOpen && !isVisible) {
+    return null;
+  }
+
   return (
-    <div className="bg-white font-sans flex flex-col h-full" style={{ borderRadius: '55px 55px 0 0' }}>
+    <>
+      {/* Затемнение фона - всегда рендерится, если компонент открыт */}
+      <div 
+        className={`fixed inset-0 bg-black z-40 transition-opacity duration-300 ${
+          isVisible ? 'opacity-50' : 'opacity-0'
+        }`}
+        style={{
+          display: isOpen || isVisible ? 'block' : 'none'
+        }}
+        onClick={handleClose}
+      />
       
-      {/* 1. Handlebar (Ручка для перетаскивания) */}
-      <div className="text-center py-4 flex-shrink-0">
-        <div className="w-10 h-1 bg-gray-300 rounded-full mx-auto" />
-      </div>
-
-      {/* 2. Destination Form (Форма адресов и оплаты) */}
-      <div className="flex-1 px-6 space-y-4 overflow-y-auto pb-6">
-        
-        {/* ОТКУДА (Ваше местоположение) */}
-        <div>
-          <h2 className="font-bold mb-2 text-base text-gray-700">Откуда</h2>
-          <div className="flex items-center bg-gray-100 rounded-2xl p-4 border border-gray-200">
-            <div className="mr-3 flex-shrink-0">
-              <LocationCircleIcon />
-            </div>
-            <span className="text-gray-600 font-medium">Ваше местоположение</span>
-          </div>
+      {/* Модальное окно с фиксированными размерами */}
+      <div 
+        className={`fixed left-1/2 transform -translate-x-1/2 bottom-0 bg-white font-sans flex flex-col z-50 transition-transform duration-300 ${
+          isVisible ? 'translate-y-0' : 'translate-y-full'
+        }`}
+        style={{ 
+          width: '402px',
+          height: '514px',
+          borderTopLeftRadius: '55px',
+          borderTopRightRadius: '55px',
+          boxShadow: '0 -10px 40px rgba(0, 0, 0, 0.15)',
+          display: isOpen || isVisible ? 'flex' : 'none'
+        }}
+      >
+        {/* 1. Handlebar (Ручка для перетаскивания) */}
+        <div className="text-center py-4 flex-shrink-0">
+          <div className="w-10 h-1 bg-gray-300 rounded-full mx-auto" />
         </div>
 
-        {/* КУДА (Выбрать на карте) */}
-        <div>
-          <h2 className="font-bold mb-2 text-base text-gray-700">Куда</h2>
-          <div className="flex items-center bg-gray-100 rounded-2xl p-4 border border-gray-200">
-            <div className="mr-3 flex-shrink-0">
-              <PinIcon />
+        {/* 2. Destination Form (Форма адресов и оплаты) */}
+        <div className="flex-1 px-6 space-y-4 overflow-y-auto pb-6" style={{ paddingTop: '0' }}>
+          
+          {/* ОТКУДА (Ваше местоположение) */}
+          <div>
+            <h2 className="font-bold mb-2 text-base ml-2" style={{ color: '#1D1B20' }}>Откуда</h2>
+            <div className="flex items-center rounded-full p-4" style={{ backgroundColor: '#D9D9D9', height: '60px' }}>
+              <div className="mr-3 flex-shrink-0">
+                <LocationCircleIcon />
+              </div>
+              <span className="font-medium" style={{ color: '#929292' }}>Ваше местоположение</span>
             </div>
-            <span className="text-gray-600 font-medium">Выбрать на карте</span>
+          </div>
+
+          {/* КУДА (Выбрать на карте) */}
+          <div>
+            <h2 className="font-bold mb-2 text-base ml-2" style={{ color: '#1D1B20' }}>Куда</h2>
+            <div className="flex items-center rounded-full p-4" style={{ backgroundColor: '#D9D9D9', height: '60px' }}>
+              <div className="mr-3 flex-shrink-0">
+                <PinIcon />
+              </div>
+              <span className="font-medium" style={{ color: '#929292' }}>Выбрать на карте</span>
+            </div>
+          </div>
+
+          {/* Способ оплаты - больше чем сверху, центрирован */}
+          <div className="flex justify-center">
+            <button 
+              onClick={() => console.log("Payment method clicked")} 
+              className="text-left transition duration-150 transform active:scale-[0.99]"
+              style={{ width: '290px', height: '75px' }}
+            >
+              <div className="flex items-center bg-gray-800 text-white rounded-full h-full px-4 shadow-lg">
+                <div className="mr-3 flex-shrink-0">
+                  <CardIcon />
+                </div>
+                <div>
+                  <p className="font-bold text-base">Способ оплаты</p>
+                  <p className="text-sm opacity-70 mt-0">Карта</p>
+                </div>
+              </div>
+            </button>
+          </div>
+          
+          {/* Search Button (Фиолетовый градиент) - больше чем сверху, центрирован */}
+          <div className="flex justify-center mt-3">
+            <button 
+              onClick={handleSearchCar}
+              className="text-left rounded-full text-lg font-bold shadow-lg transition duration-150 transform active:scale-[0.99]"
+              style={{
+                background: 'linear-gradient(90deg, #9C27B0 0%, #E040FB 100%)', 
+                color: 'white',
+                width: '290px',
+                height: '75px'
+              }}
+            >
+              <div className="flex items-center h-full pl-4">
+                <div className="mr-3">
+                  <CarIcon />
+                </div>
+                Искать машину
+              </div>
+            </button>
           </div>
         </div>
-
-        {/* Способ оплаты */}
-        <button 
-          onClick={() => console.log("Payment method clicked")} 
-          className="w-full text-left transition duration-150 transform active:scale-[0.99]"
-        >
-          <div className="flex items-center bg-gray-800 text-white rounded-2xl p-4 shadow-lg">
-            <div className="mr-3 flex-shrink-0">
-              <CardIcon />
-            </div>
-            <div>
-              <p className="font-bold text-base">Способ оплаты</p>
-              <p className="text-sm opacity-70">Карта</p>
-            </div>
-          </div>
-        </button>
         
-        {/* Search Button (Фиолетовый градиент) */}
-        <button 
-          onClick={() => {
-            console.log("Search car clicked");
-            onClose();
-          }}
-          className="w-full rounded-2xl py-4 text-lg font-bold shadow-lg transition duration-150 transform active:scale-[0.99] mt-4"
-          style={{
-            background: 'linear-gradient(90deg, #9C27B0 0%, #E040FB 100%)', 
-            color: 'white'
-          }}
-        >
-          <div className="flex items-center justify-center">
-            <div className="mr-3">
-              <CarIcon />
-            </div>
-            Искать машину
-          </div>
-        </button>
+        {/* Безопасная зона */}
+        <div className="h-4 bg-white"></div>
       </div>
-    </div>
+    </>
   );
 };

@@ -1,30 +1,14 @@
 // components/ProfileScreen.jsx
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 export const ProfileScreen = ({ setScreen }) => {
-  const [currentTime, setCurrentTime] = useState("");
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const hours = now.getHours().toString().padStart(2, "0");
-      const minutes = now.getMinutes().toString().padStart(2, "0");
-      setCurrentTime(`${hours}:${minutes}`);
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   const handleMenuClick = (menuTitle) => {
     console.log(`Клик по меню: ${menuTitle}`);
     switch(menuTitle) {
       case "Способы оплаты":
         alert("Переход к способам оплаты");
         break;
-      case "Ввести промокод":
+      case "Применить промокод":
         alert("Открытие окна для ввода промокода");
         break;
       case "История поездок":
@@ -50,15 +34,13 @@ export const ProfileScreen = ({ setScreen }) => {
   return (
     <div className="h-full flex flex-col bg-white overflow-hidden">
       <div className="h-60 w-full bg-gradient-to-b from-[#C834FF] to-white pt-4 px-6 flex flex-col flex-shrink-0">
-        <div className="text-white font-semibold text-lg text-center">{currentTime}</div>
-
-        <div className="mt-4 flex items-center space-x-4">
-          <div className="w-20 h-20 bg-[#1D1B20] rounded-full flex items-center justify-center shadow">
+        <div className="mt-8 flex items-center space-x-4">
+          <div className="w-20 h-20 bg-[#1D1B20] rounded-full flex items-center justify-center shadow overflow-hidden">
             <img
               src="/EasyGo/assets/ProfileIcon.png"
               alt="Аватар пользователя"
-              style={{ width: '80px', height: '80px' }}
-              className="opacity-70"
+              style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+              className=""
             />
           </div>
 
@@ -93,10 +75,10 @@ export const ProfileScreen = ({ setScreen }) => {
             onClick={() => handleMenuClick("Способы оплаты")}
           />
           <MenuCard 
-            icon="/EasyGo/assets/promo.png" 
-            title="Ввести промокод" 
+            icon="/EasyGo/assets/promo.png"
+            title="Применить промокод"
             iconStyle={{ width: '22px', height: '22px' }}
-            onClick={() => handleMenuClick("Ввести промокод")}
+            onClick={() => handleMenuClick("Применить промокод")}
           />
         </div>
 
