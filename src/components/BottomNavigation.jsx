@@ -2,38 +2,38 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 export const BottomNavigation = ({ currentScreen, setScreen }) => {
- const navItems = [
-  {
-    key: 'support',
-    icon: 'support',
-    label: 'Поддержка',
-    screen: 'support',
-    iconPaths: {
-      normal: '/EasyGo/assets/SupportEasyGo!.png',
-      active: '/EasyGo/assets/SupportEasyGo!2.png'
+  const navItems = [
+    {
+      key: 'support',
+      icon: 'support',
+      label: 'Поддержка',
+      screen: 'support',
+      iconPaths: {
+        normal: '/assets/SupportEasyGo!.png',  // ИСПРАВЛЕНО
+        active: '/assets/SupportEasyGo!2.png'  // ИСПРАВЛЕНО
+      }
+    },
+    {
+      key: 'home',
+      icon: 'home',
+      label: 'Карта',
+      screen: 'main', // Важно: здесь 'main'
+      iconPaths: {
+        normal: '/assets/MapEasyGo!.png',  // ИСПРАВЛЕНО
+        active: '/assets/MapEasyGo!2.png'  // ИСПРАВЛЕНО
+      }
+    },
+    {
+      key: 'profile',
+      icon: 'profile',
+      label: 'Профиль',
+      screen: 'profile',
+      iconPaths: {
+        normal: '/assets/ProfileEasyGo!.png',  // ИСПРАВЛЕНО
+        active: '/assets/ProfileEasyGo!2.png'  // ИСПРАВЛЕНО
+      }
     }
-  },
-  {
-    key: 'home',
-    icon: 'home',
-    label: 'Карта',
-    screen: 'main', // Важно: здесь 'main'
-    iconPaths: {
-      normal: '/EasyGo/assets/MapEasyGo!.png',
-      active: '/EasyGo/assets/MapEasyGo!2.png'
-    }
-  },
-  {
-    key: 'profile',
-    icon: 'profile',
-    label: 'Профиль',
-    screen: 'profile',
-    iconPaths: {
-      normal: '/EasyGo/assets/ProfileEasyGo!.png',
-      active: '/EasyGo/assets/ProfileEasyGo!2.png'
-    }
-  }
-]; 
+  ]; 
 
   const [indicatorStyle, setIndicatorStyle] = useState({});
   const navRef = useRef(null);

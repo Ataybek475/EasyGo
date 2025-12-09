@@ -1,7 +1,6 @@
-// App.jsx - добавьте состояние для управления видимостью
 import React, { useState, useEffect } from "react";
 import { HomeScreen } from "./components/HomeScreen";
-import MainScreen from "./components/EasyGOMockup.jsx";
+import EasyGOMockup from "./components/EasyGOMockup.jsx";
 import { ProfileScreen } from "./components/ProfileScreen";
 import { SupportScreen } from "./components/SupportScreen";
 import { DestinationScreen } from "./components/DestinationScreen";
@@ -12,7 +11,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [transition, setTransition] = useState("");
   const [destination, setDestination] = useState(null);
-  const [isDestinationOpen, setIsDestinationOpen] = useState(false); // НОВОЕ состояние
+  const [isDestinationOpen, setIsDestinationOpen] = useState(false);
 
   useEffect(() => {
     const savedLogin = localStorage.getItem("easygo_logged_in");
@@ -24,7 +23,7 @@ function App() {
 
   const handleSetScreen = (newScreen) => {
     if (newScreen === "destination") {
-      setIsDestinationOpen(true); // Открываем модалку
+      setIsDestinationOpen(true);
     } else {
       setTransition("fade-out");
       setTimeout(() => {
@@ -47,7 +46,7 @@ function App() {
   };
 
   const handleCloseDestination = () => {
-    setIsDestinationOpen(false); // Закрываем модалку
+    setIsDestinationOpen(false);
   };
 
   const handleSelectDestination = (address) => {
@@ -56,70 +55,54 @@ function App() {
   };
 
   return (
-    <>
-      <style>
-        {`
-          .fade-out {
-            opacity: 0;
-            transition: opacity 0.2s ease-out;
-          }
-          .fade-in {
-            opacity: 1;
-            transition: opacity 0.2s ease-in;
-          }
-        `}
-      </style>
-      
-      <div className="w-full max-w-md mx-auto min-h-screen bg-white relative overflow-hidden">
-        {/* Основной контент */}
-        <div className={`min-h-screen ${isLoggedIn ? 'pb-24' : ''} ${transition}`}>
-          {screen === "home" && (
-            <HomeScreen setScreen={handleSetScreen} />
-          )}
-          {screen === "main" && (
-            <MainScreen 
-              setScreen={handleSetScreen}
-              onLogout={handleLogout}
-              destination={destination}
-            />
-          )}
-          {screen === "profile" && (
-            <ProfileScreen 
-              setScreen={handleSetScreen} 
-              onLogout={handleLogout}
-            />
-          )}
-          {screen === "support" && (
-            <SupportScreen setScreen={handleSetScreen} />
-          )}
-        </div>
-        
-        {/* Модальное окно DestinationScreen (рендерится всегда, но управляется состоянием) */}
-        <DestinationScreen 
-          isOpen={isDestinationOpen}
-          onClose={handleCloseDestination}
-          onSelectDestination={handleSelectDestination}
-        />
-        
-        {/* Панель навигации показываем только когда залогинены и не на HomeScreen */}
-        {isLoggedIn && screen !== "home" && (
-          <div 
-            className="fixed left-1/2 transform -translate-x-1/2 z-20"
-            style={{ 
-              width: '352px', 
-              height: '77px', 
-              bottom: '18px',
-              borderRadius: '55px'
-            }}
-          >
-            <BottomNavigation 
-              currentScreen={screen} 
-              setScreen={handleSetScreen} 
-            />
-          </div>
+    <div className="w-full max-w-md mx-auto min-h-screen bg-white relative overflow-hidden">
+      {/* Основной контент */}
+      <div className={`min-h-screen ${isLoggedIn ? 'pb-24' : ''} ${transition}`}>
+        {screen === "home" && (
+          <HomeScreen setScreen={handleLogin} />
+        )}
+        {screen === "main" && (
+          <EasyGOMockup 
+            setScreen={handleSetScreen}
+            onLogout={handleLogout}
+            destination={destination}
+          />
+        )}
+        {screen === "profile" && (
+          <ProfileScreen 
+            setScreen={handleSetScreen} 
+          />
+        )}
+        {screen === "support" && (
+          <SupportScreen setScreen={handleSetScreen} />
         )}
       </div>
-    </>
+      
+      {/* Модальное окно DestinationScreen */}
+      <DestinationScreen 
+        isOpen={isDestinationOpen}
+        onClose={handleCloseDestination}
+        onSelectDestination={handleSelectDestination}
+      />
+      
+      {/* Панель навигации */}
+      {isLoggedIn && screen !== "home" && (
+        <div 
+          className="fixed left-1/2 transform -translate-x-1/2 z-20"
+          style={{ 
+            width: '352px', 
+            height: '77px', 
+            bottom: '18px',
+            borderRadius: '55px'
+          }}
+        >
+          <BottomNavigation 
+            currentScreen={screen} 
+            setScreen={handleSetScreen} 
+          />
+        </div>
+      )}
+    </div>
   );
 }
 

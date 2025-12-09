@@ -9,60 +9,68 @@ export default function EasyGOMockup({ setScreen, onLogout, destination }) {
 
   useEffect(() => {
     const initMap = async () => {
-      const L = await import('leaflet');
+      // Проверяем доступность ref
+      if (!mapRef.current) return;
       
-      if (mapRef.current && !mapInstance.current) {
-        mapInstance.current = L.map(mapRef.current, {
-          zoomControl: false,
-          attributionControl: false,
-          scrollWheelZoom: false,
-          dragging: true,
-          touchZoom: true,
-          doubleClickZoom: false,
-          boxZoom: false,
-          keyboard: false,
-          maxBounds: [[42.80, 74.40], [42.95, 74.70]],
-          maxBoundsViscosity: 1.0
-        }).setView(center, 16);
-
-        // Добавляем слой карты
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 19,
-          minZoom: 13,
-        }).addTo(mapInstance.current);
-
-        // Маркер текущего местоположения
-        L.circle(center, {
-          radius: 50,
-          color: '#AE00FF',
-          fillColor: '#AE00FF',
-          fillOpacity: 0.7,
-          weight: 3
-        }).addTo(mapInstance.current);
-
-        // Если выбран пункт назначения, добавляем маркер
-        if (destination && destination.coords) {
-          L.marker(destination.coords, {
-            icon: L.divIcon({
-              html: `<div style="background-color: #00FF88; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.3);"></div>`,
-              iconSize: [26, 26],
-              className: 'destination-marker'
-            })
-          }).addTo(mapInstance.current)
-            .bindPopup(`<b>${destination.name}</b><br>${destination.address}`);
-        }
-
-        // Блокируем скроллинг страницы
-        const mapElement = mapRef.current;
-        mapElement.addEventListener('mousewheel', (e) => {
-          e.preventDefault();
-        }, { passive: false });
+      try {
+        const L = await import('leaflet');
         
-        mapElement.addEventListener('touchmove', (e) => {
-          if (e.touches.length > 1) {
-            e.preventDefault();
+        if (!mapInstance.current) {
+          // Инициализируем карту
+          mapInstance.current = L.map(mapRef.current, {
+            zoomControl: false,
+            attributionControl: false,
+            scrollWheelZoom: false,
+            dragging: true,
+            touchZoom: true,
+            doubleClickZoom: false,
+            boxZoom: false,
+            keyboard: false,
+            maxBounds: [[42.80, 74.40], [42.95, 74.70]],
+            maxBoundsViscosity: 1.0
+          }).setView(center, 16);
+
+          // Добавляем слой карты
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            minZoom: 13,
+          }).addTo(mapInstance.current);
+
+          // Маркер текущего местоположения
+          L.circle(center, {
+            radius: 50,
+            color: '#AE00FF',
+            fillColor: '#AE00FF',
+            fillOpacity: 0.7,
+            weight: 3
+          }).addTo(mapInstance.current);
+
+          // Если выбран пункт назначения, добавляем маркер
+          if (destination && destination.coords) {
+            L.marker(destination.coords, {
+              icon: L.divIcon({
+                html: `<div style="background-color: #00FF88; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.3);"></div>`,
+                iconSize: [26, 26],
+                className: 'destination-marker'
+              })
+            }).addTo(mapInstance.current)
+              .bindPopup(`<b>${destination.name}</b><br>${destination.address}`);
           }
-        }, { passive: false });
+
+          // Блокируем скроллинг страницы
+          const mapElement = mapRef.current;
+          mapElement.addEventListener('mousewheel', (e) => {
+            e.preventDefault();
+          }, { passive: false });
+          
+          mapElement.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 1) {
+              e.preventDefault();
+            }
+          }, { passive: false });
+        }
+      } catch (error) {
+        console.error("Ошибка инициализации карты:", error);
       }
     };
 
@@ -286,8 +294,8 @@ export default function EasyGOMockup({ setScreen, onLogout, destination }) {
         </div>
       )}
 
-      {/* Стили для блокировки скроллинга и скрытия элементов Leaflet */}
-      <style jsx>{`
+      {/* Встроенные стили */}
+      <style jsx="true">{`
         .leaflet-control-zoom {
           display: none !important;
         }

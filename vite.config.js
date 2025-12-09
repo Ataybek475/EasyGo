@@ -1,27 +1,19 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/EasyGo/', // ОБЯЗАТЕЛЬНО для GitHub Pages!
-  server: {
-    port: 3000,
-    open: true
-  },
+  base: '/',
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    assetsDir: 'assets',
     rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          leaflet: ['leaflet', 'react-leaflet']
-        }
+      input: {
+        main: 'index.html'
       }
     }
   },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'leaflet']
+  server: {
+    port: 3000
   }
 })

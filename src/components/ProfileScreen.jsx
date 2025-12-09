@@ -37,7 +37,7 @@ export const ProfileScreen = ({ setScreen }) => {
         <div className="mt-8 flex items-center space-x-4">
           <div className="w-20 h-20 bg-[#1D1B20] rounded-full flex items-center justify-center shadow overflow-hidden">
             <img
-              src="/EasyGo/assets/ProfileIcon.png"
+              src="/assets/ProfileIcon.png"  // ИСПРАВЛЕНО
               alt="Аватар пользователя"
               style={{ width: '80px', height: '80px', objectFit: 'cover' }}
               className=""
@@ -69,13 +69,13 @@ export const ProfileScreen = ({ setScreen }) => {
       <div className="flex-1 px-5 -mt-10 space-y-3 overflow-y-auto pb-4">
         <div className="space-y-2 bg-[#1D1B20] rounded-2xl overflow-hidden shadow-sm">
           <MenuCard 
-            icon="/EasyGo/assets/1.png" 
+            icon="/assets/1.png"  // ИСПРАВЛЕНО
             title="Способы оплаты" 
             iconStyle={{ width: '22px', height: '22px' }}
             onClick={() => handleMenuClick("Способы оплаты")}
           />
           <MenuCard 
-            icon="/EasyGo/assets/promo.png"
+            icon="/assets/promo.png"  // ИСПРАВЛЕНО
             title="Применить промокод"
             iconStyle={{ width: '22px', height: '22px' }}
             onClick={() => handleMenuClick("Применить промокод")}
@@ -84,19 +84,19 @@ export const ProfileScreen = ({ setScreen }) => {
 
         <div className="space-y-2 bg-[#1D1B20] rounded-2xl overflow-hidden shadow-sm">
           <MenuCard 
-            icon="/EasyGo/assets/history.png" 
+            icon="/assets/history.png"  // ИСПРАВЛЕНО
             title="История поездок" 
             iconStyle={{ width: '22px', height: '22px' }}
             onClick={() => handleMenuClick("История поездок")}
           />
           <MenuCard 
-            icon="/EasyGo/assets/bell.png" 
+            icon="/assets/bell.png"  // ИСПРАВЛЕНО
             title="Уведомления" 
             iconStyle={{ width: '22px', height: '22px' }}
             onClick={() => handleMenuClick("Уведомления")}
           />
           <MenuCard 
-            icon="/EasyGo/assets/map-pin.png" 
+            icon="/assets/map-pin.png"  // ИСПРАВЛЕНО
             title="Мои адреса" 
             iconStyle={{ width: '18px', height: '22px' }}
             onClick={() => handleMenuClick("Мои адреса")}
@@ -105,13 +105,13 @@ export const ProfileScreen = ({ setScreen }) => {
 
         <div className="space-y-2 bg-[#1D1B20] rounded-2xl overflow-hidden shadow-sm">
           <MenuCard 
-            icon="/EasyGo/assets/settings.png" 
+            icon="/assets/settings.png"  // ИСПРАВЛЕНО
             title="Настройки" 
             iconStyle={{ width: '22px', height: '22px' }}
             onClick={() => handleMenuClick("Настройки")}
           />
           <MenuCard 
-            icon="/EasyGo/assets/info.png" 
+            icon="/assets/info.png"  // ИСПРАВЛЕНО
             title="Информация" 
             iconStyle={{ width: '22px', height: '22px' }}
             onClick={() => handleMenuClick("Информация")}
