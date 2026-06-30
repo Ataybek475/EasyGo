@@ -1,0 +1,121 @@
+﻿{% extends "@clinical-ux/layouts/clinical.html.twig" %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mb-4">Order Status Tracker</h1>
+    
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <select class="form-select" id="typeFilter">
+                <option value="">All Types</option>
+                <option value="lab">Lab</option>
+                <option value="imaging">Imaging</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" id="statusFilter">
+                <option value="">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+        </div>
+        <div class="col-md-4 text-end">
+            <button class="btn btn-primary" onclick="refreshOrders()">Refresh</button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped" id="ordersTable">
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Type</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Ordered At</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr class="urgency-{{ order.urgency }}">
+                    <td>{{ order.patient_name }}</td>
+                    <td><span class="cx-badge cx-badge--{{ order.order_type }}">{{ order.order_type }}</span></td>
+                    <td>{{ order.title }}</td>
+                    <td><span class="cx-badge cx-badge--{{ order.status }}">{{ order.status }}</span></td>
+                    <td>{{ order.ordered_at }}</td>
+                    <td>{{ order.due_date ?? 'N/A' }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="changeStatus({{ order.order_id }}, 'in_progress', {{ order.pid }})">
+                            Start
+                        </button>
+                        <button class="btn btn-sm btn-success" onclick="changeStatus({{ order.order_id }}, 'completed', {{ order.pid }})">
+                            Complete
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="changeStatus({{ order.order_id }}, 'cancelled', {{ order.pid }})">
+                            Cancel
+                        </button>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">No orders found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+function changeStatus(orderId, newStatus, pid) {
+    if (!confirm('Change status to ' + newStatus + '?')) return;
+    
+    fetch('{{ api_url }}?action=update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            order_id: orderId,
+            status: newStatus,
+            pid: pid,
+            order_type: 'lab'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            location.reload();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => alert('Error: ' + error));
+}
+
+function refreshOrders() {
+    location.reload();
+}
+</script>
+
+<style>
+.urgency-ok { background-color: #d4edda; }
+.urgency-warning { background-color: #fff3cd; }
+.urgency-overdue { background-color: #f8d7da; }
+
+.cx-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+}
+.cx-badge--lab { background-color: #007bff; color: white; }
+.cx-badge--imaging { background-color: #6f42c1; color: white; }
+.cx-badge--pending { background-color: #ffc107; color: black; }
+.cx-badge--in_progress { background-color: #17a2b8; color: white; }
+.cx-badge--completed { background-color: #28a745; color: white; }
+.cx-badge--cancelled { background-color: #dc3545; color: white; }
+</style>
+{% endblock %}
